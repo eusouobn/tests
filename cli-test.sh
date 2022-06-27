@@ -403,7 +403,7 @@ echo -e 'Escolha um Driver de Vídeo Secundário (Para Notebooks com Placas Híb
 select secondaryvideodriver in {NENHUM,AMDGPU,ATI,INTEL,Nouveau,Nvidia,VMWARE};do
 	case $secondaryvideodriver in
 	NENHUM)
-	break
+	break;;
 	AMDGPU|ATI|INTEL|Nouveau|Nvidia|VMWARE)
 	echo -e "${videodriver,,}\nOK";;
 	*) echo -e "\e[1;38mErro\e[m\nEscolha uma Opção válida.";continue;;
