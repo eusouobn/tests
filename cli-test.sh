@@ -378,13 +378,32 @@ read -p "SWAP em GB : " SWAP
 
 
 
-### DRIVER DE VIDEO
+### DRIVER DE VIDEO PRIMÁRIO
 
 printf '\x1bc';
 PS3=$'\nSelecione uma opção: ';
-echo -e 'Escolha um Driver de Vídeo: '
+echo -e 'Escolha um Driver de Vídeo Primário (Para Notebooks com Placas Híbridas - Selecione Driver do Vídeo Onboard): '
 select videodriver in {AMDGPU,ATI,INTEL,Nouveau,Nvidia,VMWARE};do
 	case $videodriver in
+	AMDGPU|ATI|INTEL|Nouveau|Nvidia|VMWARE)
+	echo -e "${videodriver,,}\nOK";;
+	*) echo -e "\e[1;38mErro\e[m\nEscolha uma Opção válida.";continue;;
+	esac
+break;
+done
+
+
+
+
+### DRIVER DE VIDEO SECUNDÁRIO
+
+printf '\x1bc';
+PS3=$'\nSelecione uma opção: ';
+echo -e 'Escolha um Driver de Vídeo Secundário (Para Notebooks com Placas Híbridas - Selecione Driver da Placa Dedicada - Ou escolha NENHUM): '
+select secondaryvideodriver in {NENHUM,AMDGPU,ATI,INTEL,Nouveau,Nvidia,VMWARE};do
+	case $secondaryvideodriver in
+	NENHUM)
+	break
 	AMDGPU|ATI|INTEL|Nouveau|Nvidia|VMWARE)
 	echo -e "${videodriver,,}\nOK";;
 	*) echo -e "\e[1;38mErro\e[m\nEscolha uma Opção válida.";continue;;
