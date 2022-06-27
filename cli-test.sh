@@ -399,7 +399,8 @@ done
 
 printf '\x1bc';
 PS3=$'\nSelecione uma opção: ';
-echo -e 'Escolha um Driver de Vídeo Secundário (Para Notebooks com Placas Híbridas - Selecione Driver da Placa Dedicada - Ou escolha NENHUM): '
+echo -e 'Escolha um Driver de Vídeo Secundário (Para Notebooks com Placas Híbridas - Selecione Driver da Placa Dedicada): '
+echo -e 'Ou escolha NENHUM'
 select secondaryvideodriver in {NENHUM,AMDGPU,ATI,INTEL,Nouveau,Nvidia,VMWARE};do
 	case $secondaryvideodriver in
 	NENHUM)
