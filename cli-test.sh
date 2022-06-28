@@ -217,24 +217,24 @@ parted /dev/${installdisk,,} set 1 esp on
                       mount /dev/${installdisk,,}1 /mnt/boot/efi
 
                       elif [ "$filesystem" = "btrfs" ];then
-                      parted /dev/${installdisk,,} mkpart primary ext4 301MiB 100% -s
-                      mkfs.btrfs -f /dev/${installdisk,,}
+                      parted /dev/${installdisk,,} mkpart primary btrfs 301MiB 100% -s
+                      mkfs.btrfs -f /dev/${installdisk,,}2
 		      mount /dev/${installdisk,,}2 /mnt
                       mkdir /mnt/boot/
                       mkdir /mnt/boot/efi
                       mount /dev/${installdisk,,}1 /mnt/boot/efi
 
                       elif [ "$filesystem" = "f2fs" ];then
-                      parted /dev/${installdisk,,} mkpart primary ext4 301MiB 100% -s
-                      mkfs.f2fs -f /dev/${installdisk,,}
+                      parted /dev/${installdisk,,} mkpart primary f2fs 301MiB 100% -s
+                      mkfs.f2fs -f /dev/${installdisk,,}2
 		      mount /dev/${installdisk,,}2 /mnt
                       mkdir /mnt/boot/
                       mkdir /mnt/boot/efi
                       mount /dev/${installdisk,,}1 /mnt/boot/efi
 
                       elif [ "$filesystem" = "xfs" ];then
-                      parted /dev/${installdisk,,} mkpart primary ext4 301MiB 100% -s
-                      mkfs.xfs -f /dev/${installdisk,,}
+                      parted /dev/${installdisk,,} mkpart primary xfs 301MiB 100% -s
+                      mkfs.xfs -f /dev/${installdisk,,}2
 		      mount /dev/${installdisk,,}2 /mnt
                       mkdir /mnt/boot/
                       mkdir /mnt/boot/efi
