@@ -460,7 +460,7 @@ echo -e 'Escolha um Kernel: '
 select kernel in {linux,linux-zen,linux-lts,linux-harneded};do
 	case $kernel in
 	linux|linux-zen|linux-lts|linux-harneded)
-	pacstrap /mnt base btrfs-progs dosfstools e2fsprogs f2fs-tools dosfstools xfsprogs linux-firmware ${kernel,,};;
+	pacstrap /mnt base btrfs-progs dosfstools e2fsprogs f2fs-tools dosfstools xfsprogs usbutils linux-firmware ${kernel,,};;
 	*) echo -e "\e[1;38mErro\e[m\nEscolha uma Opção válida.";continue;;
 	esac
 break;
@@ -776,6 +776,18 @@ fi
 
 
 echo -e "$(tput sgr0)\n\n"
+
+
+
+
+### Bluetooth
+
+
+
+
+if [  $(arch-chroot /mnt lsusb | grep -c Bluetooth) = 1 ]; then
+
+
 
 
 
