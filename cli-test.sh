@@ -460,7 +460,7 @@ echo -e 'Escolha um Kernel: '
 select kernel in {linux,linux-zen,linux-lts,linux-harneded};do
 	case $kernel in
 	linux|linux-zen|linux-lts|linux-harneded)
-	pacstrap /mnt base btrfs-progs dosfstools e2fsprogs f2fs-tools dosfstools xfsprogs usbutils linux-firmware ${kernel,,};;
+	pacstrap /mnt base btrfs-progs dosfstools e2fsprogs f2fs-tools dosfstools xfsprogs linux-firmware ${kernel,,};;
 	*) echo -e "\e[1;38mErro\e[m\nEscolha uma Opção válida.";continue;;
 	esac
 break;
@@ -516,14 +516,6 @@ echo -e "127.0.0.1 localhost.localdomain localhost\n::1 localhost.localdomain lo
 
 
 
-##### INSIDE CHROOT #####
-
-
-
-###AJUSTAR HORA AUTOMATICAMENTE
-
-arch-chroot /mnt timedatectl set-ntp true
-
 
 ###FUSO HORÁRIO
 
@@ -533,16 +525,6 @@ arch-chroot /mnt sed -i 's/#Fallback//' /etc/systemd/timesyncd.conf
 arch-chroot /mnt echo \"FallbackNTP=0.pool.ntp.org 1.pool.ntp.org 0.fr.pool.ntp.org\" >> /etc/systemd/timesyncd.conf
 arch-chroot /mnt systemctl enable systemd-timesyncd.service
 
-
-
-###SINCRONIZAR REPOSITORIOS
-
-arch-chroot /mnt pacman -Syy git --noconfirm
-
-
-###UTILITARIOS BASICOS
-
-arch-chroot /mnt pacman -Sy nano wget pacman-contrib reflector sudo grub --noconfirm
 
 
 
@@ -780,18 +762,6 @@ echo -e "$(tput sgr0)\n\n"
 
 
 
-### Bluetooth
-
-
-
-
-if [  $(arch-chroot /mnt lsusb | grep -c Bluetooth) = 1 ]; then
-
-
-
-
-
-
 ###GRUB
 
 PASTA_EFI=/sys/firmware/efi
@@ -812,6 +782,12 @@ fi
 
 arch-chroot /mnt xdg-user-dirs-update
 
+
+
+#### Bluetooth
+
+if [  $(lsusb | grep -c bluetooth) = 1 ]; then
+	if [ "$DE" = "Plasma-X11" ];then
 
 
 
