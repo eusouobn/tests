@@ -197,92 +197,87 @@ echo -e "Sistema EFI"
 parted /dev/${installdisk,,} mklabel gpt -s
 parted /dev/${installdisk,,} mkpart primary fat32 1MiB 301MiB -s
 parted /dev/${installdisk,,} set 1 esp on
-       if [  $(echo $installdisk | grep -c sd) = 1 ]; then
-       echo "sda"
-       mkfs.fat -F32 /dev/${installdisk,,}1
-       elif [  $(echo $installdisk | grep -c nvme) = 1 ]; then
-       echo "nvme"
-       mkfs.fat -F32 /dev/${installdisk,,}p1
-       fi
+	if [  $(echo $installdisk | grep -c sd) = 1 ]; then
+	echo "sda"
+	mkfs.fat -F32 /dev/${installdisk,,}1
+	elif [  $(echo $installdisk | grep -c nvme) = 1 ]; then
+	echo "nvme"
+	mkfs.fat -F32 /dev/${installdisk,,}p1
+	fi
 
-	   ###PARTIÇÃO ROOT
-           if [  $(echo $installdisk | grep -c sd) = 1 ]; then
-           echo "sda"
-                      if [ "$filesystem" = "ext4" ];then
-	              parted /dev/${installdisk,,} mkpart primary ext4 301MiB 100% -s
-                      mkfs.ext4 -F /dev/${installdisk,,}2
-		      mount /dev/${installdisk,,}2 /mnt
-                      mkdir /mnt/boot/
-                      mkdir /mnt/boot/efi
-                      mount /dev/${installdisk,,}1 /mnt/boot/efi
+		###PARTIÇÃO ROOT
+		if [  $(echo $installdisk | grep -c sd) = 1 ]; then
+		echo "sda"
+			if [ "$filesystem" = "ext4" ];then
+			parted /dev/${installdisk,,} mkpart primary ext4 301MiB 100% -s
+			mkfs.ext4 -F /dev/${installdisk,,}2
+			mount /dev/${installdisk,,}2 /mnt
+			mkdir /mnt/boot/
+			mkdir /mnt/boot/efi
+			mount /dev/${installdisk,,}1 /mnt/boot/efi
 
-                      elif [ "$filesystem" = "btrfs" ];then
-                      parted /dev/${installdisk,,} mkpart primary btrfs 301MiB 100% -s
-                      mkfs.btrfs -f /dev/${installdisk,,}2
-		      mount /dev/${installdisk,,}2 /mnt
-                      mkdir /mnt/boot/
-                      mkdir /mnt/boot/efi
-                      mount /dev/${installdisk,,}1 /mnt/boot/efi
+			elif [ "$filesystem" = "btrfs" ];then
+			parted /dev/${installdisk,,} mkpart primary btrfs 301MiB 100% -s
+			mkfs.btrfs -f /dev/${installdisk,,}2
+			mount /dev/${installdisk,,}2 /mnt
+			mkdir /mnt/boot/
+			mkdir /mnt/boot/efi
+			mount /dev/${installdisk,,}1 /mnt/boot/efi
 
-                      elif [ "$filesystem" = "f2fs" ];then
-                      parted /dev/${installdisk,,} mkpart primary f2fs 301MiB 100% -s
-                      mkfs.f2fs -f /dev/${installdisk,,}2
-		      mount /dev/${installdisk,,}2 /mnt
-                      mkdir /mnt/boot/
-                      mkdir /mnt/boot/efi
-                      mount /dev/${installdisk,,}1 /mnt/boot/efi
+			elif [ "$filesystem" = "f2fs" ];then
+			parted /dev/${installdisk,,} mkpart primary f2fs 301MiB 100% -s
+			mkfs.f2fs -f /dev/${installdisk,,}2
+			mount /dev/${installdisk,,}2 /mnt
+			mkdir /mnt/boot/
+			mkdir /mnt/boot/efi
+			mount /dev/${installdisk,,}1 /mnt/boot/efi
 
-                      elif [ "$filesystem" = "xfs" ];then
-                      parted /dev/${installdisk,,} mkpart primary xfs 301MiB 100% -s
-                      mkfs.xfs -f /dev/${installdisk,,}2
-		      mount /dev/${installdisk,,}2 /mnt
-                      mkdir /mnt/boot/
-                      mkdir /mnt/boot/efi
-                      mount /dev/${installdisk,,}1 /mnt/boot/efi
+			elif [ "$filesystem" = "xfs" ];then
+			parted /dev/${installdisk,,} mkpart primary xfs 301MiB 100% -s
+			mkfs.xfs -f /dev/${installdisk,,}2
+			mount /dev/${installdisk,,}2 /mnt
+			mkdir /mnt/boot/
+			mkdir /mnt/boot/efi
+			mount /dev/${installdisk,,}1 /mnt/boot/efi
+			fi
 
-                      fi
+		elif [  $(echo $installdisk | grep -c nvme) = 1 ]; then
+		echo "NVME"
+			if [ "$filesystem" = "ext4" ];then
+			parted /dev/${installdisk,,} mkpart primary ext4 301MiB 100% -s
+			mkfs.ext4 -F /dev/${installdisk,,}p2
+			mount /dev/${installdisk,,}p2 /mnt
+			mkdir /mnt/boot/
+			mkdir /mnt/boot/efi
+			mount /dev/${installdisk,,}p1 /mnt/boot/efi
 
-           elif [  $(echo $installdisk | grep -c nvme) = 1 ]; then
-           echo "NVME"
-	              if [ "$filesystem" = "ext4" ];then
-	              parted /dev/${installdisk,,} mkpart primary ext4 301MiB 100% -s
-                      mkfs.ext4 -F /dev/${installdisk,,}p2
-		      mount /dev/${installdisk,,}p2 /mnt
-                      mkdir /mnt/boot/
-                      mkdir /mnt/boot/efi
-                      mount /dev/${installdisk,,}p1 /mnt/boot/efi
+			elif [ "$filesystem" = "btrfs" ];then
+			parted /dev/${installdisk,,} mkpart primary btrfs 301MiB 100% -s
+			mkfs.btrfs -f /dev/${installdisk,,}p2
+			mount /dev/${installdisk,,}p2 /mnt
+			mkdir /mnt/boot/
+			mkdir /mnt/boot/efi
+			mount /dev/${installdisk,,}p1 /mnt/boot/efi
 
-                      elif [ "$filesystem" = "btrfs" ];then
-                      parted /dev/${installdisk,,} mkpart primary btrfs 301MiB 100% -s
-                      mkfs.btrfs -f /dev/${installdisk,,}p2
-		      mount /dev/${installdisk,,}p2 /mnt
-                      mkdir /mnt/boot/
-                      mkdir /mnt/boot/efi
-                      mount /dev/${installdisk,,}p1 /mnt/boot/efi
+			elif [ "$filesystem" = "f2fs" ];then
+			parted /dev/${installdisk,,} mkpart primary f2fs 301MiB 100% -s
+			mkfs.f2fs -f /dev/${installdisk,,}p2
+			mount /dev/${installdisk,,}p2 /mnt
+			mkdir /mnt/boot/
+			mkdir /mnt/boot/efi
+			mount /dev/${installdisk,,}p1 /mnt/boot/efi
 
-                      elif [ "$filesystem" = "f2fs" ];then
-                      parted /dev/${installdisk,,} mkpart primary f2fs 301MiB 100% -s
-                      mkfs.f2fs -f /dev/${installdisk,,}p2
-		      mount /dev/${installdisk,,}p2 /mnt
-                      mkdir /mnt/boot/
-                      mkdir /mnt/boot/efi
-                      mount /dev/${installdisk,,}p1 /mnt/boot/efi
-
-                      elif [ "$filesystem" = "xfs" ];then
-                      parted /dev/${installdisk,,} mkpart primary xfs 301MiB 100% -s
-                      mkfs.xfs -f /dev/${installdisk,,}p2
-		      mount /dev/${installdisk,,}p2 /mnt
-                      mkdir /mnt/boot/
-                      mkdir /mnt/boot/efi
-                      mount /dev/${installdisk,,}p1 /mnt/boot/efi
-
-                      fi
-
-	   fi
-
-
+			elif [ "$filesystem" = "xfs" ];then
+			parted /dev/${installdisk,,} mkpart primary xfs 301MiB 100% -s
+			mkfs.xfs -f /dev/${installdisk,,}p2
+			mount /dev/${installdisk,,}p2 /mnt
+			mkdir /mnt/boot/
+			mkdir /mnt/boot/efi
+			mount /dev/${installdisk,,}p1 /mnt/boot/efi
+			fi
+		fi
+	fi
 fi
-
 
 
 if [ ! -d "$PASTA_EFI" ];then
