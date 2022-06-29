@@ -434,9 +434,6 @@ done
 
 #### Pulseaudio ou Pipewire
 
-
-
-
 printf '\x1bc';
 PS3=$'\nSelecione uma opção: ';
 echo -e 'Escolha um Servidor de Áudio: '
@@ -478,7 +475,7 @@ echo -e 'Escolha um Kernel: '
 select kernel in {linux,linux-zen,linux-lts,linux-harneded};do
 	case $kernel in
 	linux|linux-zen|linux-lts|linux-harneded)
-	pacstrap /mnt base btrfs-progs dosfstools e2fsprogs f2fs-tools dosfstools xfsprogs linux-firmware ${kernel,,};;
+	pacstrap /mnt base btrfs-progs dosfstools e2fsprogs f2fs-tools dosfstools xfsprogs linux-firmware ${kernel,,} ${kernel,,}-headers ;;
 	*) echo -e "\e[1;38mErro\e[m\nEscolha uma Opção válida.";continue;;
 	esac
 break;
