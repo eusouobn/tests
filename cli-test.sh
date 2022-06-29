@@ -277,7 +277,6 @@ parted /dev/${installdisk,,} set 1 esp on
 			fi
 		fi
 	fi
-fi
 
 
 if [ ! -d "$PASTA_EFI" ];then
