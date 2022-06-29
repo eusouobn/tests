@@ -137,9 +137,9 @@ echo "sda"
 
         parted /dev/${homedisk,,} mklabel gpt -s
 	
-        if [ "$filesystem" = "ext4" ];then
-                parted /dev/${homedisk,,} mkpart primary ext4 1MiB 100% -s
-                mkfs.ext4 -F /dev/${homedisk,,}1
+	if [ "$filesystem" = "ext4" ];then
+	parted /dev/${homedisk,,} mkpart primary ext4 1MiB 100% -s
+	mkfs.ext4 -F /dev/${homedisk,,}1
 
         elif [ "$filesystem" = "btrfs" ];then
                 parted /dev/${homedisk,,} mkpart primary btrfs 1MiB 100% -s
@@ -158,22 +158,22 @@ echo "sda"
 elif [  $(echo $installdisk | grep -c nvme) = 1 ]; then
 echo "NVME"
 
-        if [ "$filesystem" = "ext4" ];then
+	if [ "$filesystem" = "ext4" ];then
                 parted /dev/${homedisk,,} mkpart primary ext4 1MiB 100% -s
                 mkfs.ext4 -F /dev/${homedisk,,}p1
 
-        elif [ "$filesystem" = "btrfs" ];then
+	elif [ "$filesystem" = "btrfs" ];then
                 parted /dev/${homedisk,,} mkpart primary btrfs 1MiB 100% -s
                 mkfs.btrfs -f /dev/${homedisk,,}p1
 
-        elif [ "$filesystem" = "f2fs" ];then
+	elif [ "$filesystem" = "f2fs" ];then
                 parted /dev/${homedisk,,} mkpart primary f2fs 1MiB 100% -s
                 mkfs.f2fs -f /dev/${homedisk,,}p1
 
-        elif [ "$filesystem" = "xfs" ];then
+	elif [ "$filesystem" = "xfs" ];then
                 parted /dev/${homedisk,,} mkpart primary xfs 1MiB 100% -s
                 mkfs.xfs -f /dev/${homedisk,,}p1
-        fi
+	fi
 
 fi
 
@@ -456,16 +456,16 @@ done
 
 echo "Montando /home"
 
-        if [  $(echo $homedisk | grep -c sd) = 1 ]; then
-        echo "sda"
-        mkdir /mnt/home
-        mount /dev/${homedisk,,}1 /mnt/home
+	if [  $(echo $homedisk | grep -c sd) = 1 ]; then
+	echo "sda"
+	mkdir /mnt/home
+	mount /dev/${homedisk,,}1 /mnt/home
 
-        elif [  $(echo $homedisk | grep -c nvme) = 1 ]; then
-        echo "NVME"
-        mkdir /mnt/home
-        mount /dev/${homedisk,,}p1 /mnt/home
-        fi
+	elif [  $(echo $homedisk | grep -c nvme) = 1 ]; then
+	echo "NVME"
+	mkdir /mnt/home
+	mount /dev/${homedisk,,}p1 /mnt/home
+	fi
 
 
 
@@ -621,8 +621,8 @@ echo -e "$(tput sgr0)\n\n"
 	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager tar gzip bzip2 zip unzip unrar p7zip pipewire pipewire-alsa pipewire-jack pipewire-pulse wireplumber xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-gtk --noconfirm
 	elif [ "$SS" = "Pulseaudio" ];then
 	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager tar gzip bzip2 zip unzip unrar p7zip pulseaudio pulseaudio-alsa pulseaudio-bluetooth pulseaudio-jack xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-gtk --noconfirm
-	systemctl enable pulseaudio.service
-	systemctl enable pulseaudio.socket
+	arch-chroot /mnt systemctl enable pulseaudio.service
+	arch-chroot /mnt systemctl enable pulseaudio.socket
 	fi
 	
 ##Interface e DM
@@ -645,8 +645,8 @@ echo -e "$(tput sgr0)\n\n"
 	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager tar gzip bzip2 zip unzip unrar p7zip pipewire pipewire-alsa pipewire-jack pipewire-pulse wireplumber xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-gtk --noconfirm
 	elif [ "$SS" = "Pulseaudio" ];then
 	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager tar gzip bzip2 zip unzip unrar p7zip pulseaudio pulseaudio-alsa pulseaudio-bluetooth pulseaudio-jack xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-gtk --noconfirm
-	systemctl enable pulseaudio.service
-	systemctl enable pulseaudio.socket
+	arch-chroot /mnt systemctl enable pulseaudio.service
+	arch-chroot /mnt systemctl enable pulseaudio.socket
 	fi
 	
 ##Interface e DM
@@ -669,8 +669,8 @@ echo -e "$(tput sgr0)\n\n"
 	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager tar gzip bzip2 zip unzip unrar p7zip pipewire pipewire-alsa pipewire-jack pipewire-pulse wireplumber xdg-user-dirs gnome-disk-utility noto-fonts xdg-desktop-portal-kde --noconfirm
 	elif [ "$SS" = "Pulseaudio" ];then
 	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager tar gzip bzip2 zip unzip unrar p7zip pulseaudio pulseaudio-alsa pulseaudio-bluetooth pulseaudio-jack xdg-user-dirs gnome-disk-utility noto-fonts xdg-desktop-portal-kde --noconfirm
-	systemctl enable pulseaudio.service
-	systemctl enable pulseaudio.socket
+	arch-chroot /mnt systemctl enable pulseaudio.service
+	arch-chroot /mnt systemctl enable pulseaudio.socket
 	fi	
 
 ##Interface e DM
@@ -693,8 +693,8 @@ echo -e "$(tput sgr0)\n\n"
 	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager tar gzip bzip2 zip unzip unrar p7zip pipewire pipewire-alsa pipewire-jack pipewire-pulse wireplumber xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-gnome --noconfirm
 	elif [ "$SS" = "Pulseaudio" ];then
 	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager tar gzip bzip2 zip unzip unrar p7zip pulseaudio pulseaudio-alsa pulseaudio-bluetooth pulseaudio-jack xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-gnome --noconfirm
-	systemctl enable pulseaudio.service
-	systemctl enable pulseaudio.socket
+	arch-chroot /mnt systemctl enable pulseaudio.service
+	arch-chroot /mnt systemctl enable pulseaudio.socket
 	fi
 
 ##Interface e DM
@@ -717,8 +717,8 @@ echo -e "$(tput sgr0)\n\n"
 	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager tar gzip bzip2 zip unzip unrar p7zip pipewire pipewire-alsa pipewire-jack pipewire-pulse wireplumber xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-kde --noconfirm
 	elif [ "$SS" = "Pulseaudio" ];then
 	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager tar gzip bzip2 zip unzip unrar p7zip pulseaudio pulseaudio-alsa pulseaudio-bluetooth pulseaudio-jack xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-kde --noconfirm
-	systemctl enable pulseaudio.service
-	systemctl enable pulseaudio.socket
+	arch-chroot /mnt systemctl enable pulseaudio.service
+	arch-chroot /mnt systemctl enable pulseaudio.socket
 	fi
 
 ##Interface e DM
@@ -741,8 +741,8 @@ echo -e "$(tput sgr0)\n\n"
 	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager tar gzip bzip2 zip unzip unrar p7zip pipewire pipewire-alsa pipewire-jack pipewire-pulse wireplumber xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-kde --noconfirm
 	elif [ "$SS" = "Pipewire" ];then
 	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager tar gzip bzip2 zip unzip unrar p7zip pulseaudio pulseaudio-alsa pulseaudio-bluetooth pulseaudio-jack xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-kde --noconfirm
-	systemctl enable pulseaudio.service
-	systemctl enable pulseaudio.socket
+	arch-chroot /mnt systemctl enable pulseaudio.service
+	arch-chroot /mnt systemctl enable pulseaudio.socket
 	fi
 	
 ##Interface e DM
@@ -765,8 +765,8 @@ echo -e "$(tput sgr0)\n\n"
 	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager tar gzip bzip2 zip unzip unrar p7zip pipewire pipewire-alsa pipewire-jack pipewire-pulse wireplumber xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-gtk --noconfirm
 	elif [ "$SS" = "Pulseaudio" ];then
 	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager tar gzip bzip2 zip unzip unrar p7zip pulseaudio pulseaudio-alsa pulseaudio-bluetooth pulseaudio-jack xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-gtk --noconfirm
-	systemctl enable pulseaudio.service
-	systemctl enable pulseaudio.socket
+	arch-chroot /mnt systemctl enable pulseaudio.service
+	arch-chroot /mnt systemctl enable pulseaudio.socket
 	fi
 	
 ##Interface e DM
@@ -789,8 +789,8 @@ echo -e "$(tput sgr0)\n\n"
 	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager tar gzip bzip2 zip unzip unrar p7zip pipewire pipewire-alsa pipewire-jack pipewire-pulse wireplumber xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-lxqt --noconfirm
 	elif [ "$SS" = "Pulseaudio" ];then
 	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager tar gzip bzip2 zip unzip unrar p7zip pulseaudio pulseaudio-alsa pulseaudio-bluetooth pulseaudio-jack xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-lxqt --noconfirm
-	systemctl enable pulseaudio.service
-	systemctl enable pulseaudio.socket
+	arch-chroot /mnt systemctl enable pulseaudio.service
+	arch-chroot /mnt systemctl enable pulseaudio.socket
 	fi
 	
 ##Interface e DM
@@ -813,8 +813,8 @@ echo -e "$(tput sgr0)\n\n"
 	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager tar gzip bzip2 zip unzip unrar p7zip pipewire pipewire-alsa pipewire-jack pipewire-pulse wireplumber xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-gtk --noconfirm
 	elif [ "$SS" = "Pulseaudio" ];then
 	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager tar gzip bzip2 zip unzip unrar p7zip pulseaudio pulseaudio-alsa pulseaudio-bluetooth pulseaudio-jack xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-gtk --noconfirm
-	systemctl enable pulseaudio.service
-	systemctl enable pulseaudio.socket
+	arch-chroot /mnt systemctl enable pulseaudio.service
+	arch-chroot /mnt systemctl enable pulseaudio.socket
 	fi
 
 ##Interface e DM
@@ -838,8 +838,8 @@ echo -e "$(tput sgr0)\n\n"
 	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager tar gzip bzip2 zip unzip unrar p7zip pipewire pipewire-alsa pipewire-jack pipewire-pulse wireplumber xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-gtk --noconfirm
 	elif [ "$SS" = "Pulseaudio" ];then
 	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager tar gzip bzip2 zip unzip unrar p7zip pulseaudio pulseaudio-alsa pulseaudio-bluetooth pulseaudio-jack xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-gtk --noconfirm
-	systemctl enable pulseaudio.service
-	systemctl enable pulseaudio.socket
+	arch-chroot /mnt systemctl enable pulseaudio.service
+	arch-chroot /mnt systemctl enable pulseaudio.socket
 	fi
 
 
