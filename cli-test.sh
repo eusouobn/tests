@@ -883,10 +883,18 @@ arch-chroot /mnt xdg-user-dirs-update
 
 
 
+
 #### Bluetooth
 
-#if [  $(lsusb | grep -c bluetooth) = 1 ]; then
-#	if [ "$DE" = "Plasma-X11" ];then
+if [  $(lsusb | grep -c bluetooth) = 1 ]; then
+	if [[ "$DE" = "Plasma-X11" || "$DE" = "Plasma-Wayland" || "$DE" = "Deepin" || "$DE" = "LXQT" ]];then
+	pacman -S bluez bluez-utils --noconfirm
+	
+	elif [[ "$DE" = "Budgie" || "$DE" = "Cinnamon" || "$DE" = "Gnome" || "$DE" = "LXDE" || "$DE" = "MATE" || "$DE" = "XFCE" ]];then
+	pacman -S bluez bluez-utils blueman --noconfirm
+	fi
+fi
+
 
 
 
@@ -901,6 +909,12 @@ else
 arch-chroot /mnt fallocate -l ${SWAP,,}G /swapfile && arch-chroot /mnt chmod 600 /swapfile && arch-chroot /mnt mkswap /swapfile && arch-chroot /mnt swapon /swapfile && echo -e '/swapfile none swap defaults 0 0\n' | arch-chroot /mnt tee -a /etc/fstab
 
 fi
+
+
+
+#### Diasble Wait-Online Service
+
+systemctl disable NetworkManager-wait-online.service
 
 
 
