@@ -435,6 +435,28 @@ done
 
 
 
+
+
+#### Pulseaudio ou Pipewire
+
+
+
+
+printf '\x1bc';
+PS3=$'\nSelecione uma opção: ';
+echo -e 'Escolha um Servidor de Áudio: '
+select SS in {Pipewire,Pulseaudio};do
+	case $SS in
+	Pipewire|Pulseaudio)
+	echo -e "${SS,,}\nOK";;
+	*) echo -e "\e[1;38mErro\e[m\nEscolha uma Opção válida.";continue;;
+	esac
+break;
+done
+
+
+
+
 ### MONTAR /HOME
 
 echo "Montando /home"
@@ -449,6 +471,7 @@ echo "Montando /home"
         mkdir /mnt/home
         mount /dev/${homedisk,,}p1 /mnt/home
         fi
+
 
 
 ### KERNEL
@@ -591,8 +614,6 @@ arch-chroot /mnt pacman -S xf86-video-${videodriver,,} --noconfirm
 
 ###SET-DESKTOP-ENVIRONMENT
 
-
-
 if [ "$DE" = "Budgie" ];then
 
 echo "Budge"
@@ -601,12 +622,19 @@ echo -e "$(tput sgr0)\n\n"
 
 ##Pacotes Padrão
 
-arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager tar gzip bzip2 zip unzip unrar p7zip pipewire pipewire-alsa pipewire-jack pipewire-pulse wireplumber xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-gtk --noconfirm
-
+	if [ "$SS" = "Pipewire" ];then
+	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager tar gzip bzip2 zip unzip unrar p7zip pipewire pipewire-alsa pipewire-jack pipewire-pulse wireplumber xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-gtk --noconfirm
+	elif [ "$SS" = "Pulseaudio" ];then
+	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager tar gzip bzip2 zip unzip unrar p7zip pulseaudio pulseaudio-alsa pulseaudio-bluetooth pulseaudio-jack xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-gtk --noconfirm
+	systemctl enable pulseaudio.service
+	systemctl enable pulseaudio.socket
+	fi
+	
 ##Interface e DM
 
 arch-chroot /mnt pacman -S budgie-desktop gnome-terminal gedit gnome-calculator gnome-calendar gnome-system-monitor nautilus network-manager-applet lightdm lightdm-gtk-greeter --noconfirm
 arch-chroot /mnt systemctl enable lightdm NetworkManager
+
 
 
 
@@ -618,12 +646,19 @@ echo -e "$(tput sgr0)\n\n"
 
 ##Pacotes Padrão
 
-arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager tar gzip bzip2 zip unzip unrar p7zip pipewire pipewire-alsa pipewire-jack pipewire-pulse wireplumber xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-gtk --noconfirm
-
+	if [ "$SS" = "Pipewire" ];then
+	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager tar gzip bzip2 zip unzip unrar p7zip pipewire pipewire-alsa pipewire-jack pipewire-pulse wireplumber xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-gtk --noconfirm
+	elif [ "$SS" = "Pulseaudio" ];then
+	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager tar gzip bzip2 zip unzip unrar p7zip pulseaudio pulseaudio-alsa pulseaudio-bluetooth pulseaudio-jack xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-gtk --noconfirm
+	systemctl enable pulseaudio.service
+	systemctl enable pulseaudio.socket
+	fi
+	
 ##Interface e DM
 
 arch-chroot /mnt pacman -S cinnamon network-manager-applet lightdm lightdm-gtk-greeter --noconfirm
 arch-chroot /mnt systemctl enable lightdm NetworkManager
+
 
 
 
@@ -635,12 +670,19 @@ echo -e "$(tput sgr0)\n\n"
 
 ##Pacotes Padrão
 
-arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager tar gzip bzip2 zip unzip unrar p7zip pipewire pipewire-alsa pipewire-jack pipewire-pulse wireplumber xdg-user-dirs gnome-disk-utility noto-fonts xdg-desktop-portal-kde --noconfirm
+	if [ "$SS" = "Pipewire" ];then
+	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager tar gzip bzip2 zip unzip unrar p7zip pipewire pipewire-alsa pipewire-jack pipewire-pulse wireplumber xdg-user-dirs gnome-disk-utility noto-fonts xdg-desktop-portal-kde --noconfirm
+	elif [ "$SS" = "Pulseaudio" ];then
+	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager tar gzip bzip2 zip unzip unrar p7zip pulseaudio pulseaudio-alsa pulseaudio-bluetooth pulseaudio-jack xdg-user-dirs gnome-disk-utility noto-fonts xdg-desktop-portal-kde --noconfirm
+	systemctl enable pulseaudio.service
+	systemctl enable pulseaudio.socket
+	fi	
 
 ##Interface e DM
 
 arch-chroot /mnt pacman -S deepin network-manager-applet lightdm lightdm-gtk-greeter --noconfirm
 arch-chroot /mnt systemctl enable lightdm NetworkManager
+
 
 
 
@@ -652,12 +694,21 @@ echo -e "$(tput sgr0)\n\n"
 
 ##Pacotes Padrão
 
-arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager tar gzip bzip2 zip unzip unrar p7zip pipewire pipewire-alsa pipewire-jack pipewire-pulse wireplumber xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-gnome --noconfirm
+	if [ "$SS" = "Pipewire" ];then
+	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager tar gzip bzip2 zip unzip unrar p7zip pipewire pipewire-alsa pipewire-jack pipewire-pulse wireplumber xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-gnome --noconfirm
+	elif [ "$SS" = "Pulseaudio" ];then
+	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager tar gzip bzip2 zip unzip unrar p7zip pulseaudio pulseaudio-alsa pulseaudio-bluetooth pulseaudio-jack xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-gnome --noconfirm
+	systemctl enable pulseaudio.service
+	systemctl enable pulseaudio.socket
+	fi
 
 ##Interface e DM
 
 arch-chroot /mnt pacman -S gnome gnome-tweaks network-manager-applet gdm --noconfirm
 arch-chroot /mnt systemctl enable gdm NetworkManager
+
+
+
 
 elif [ "$DE" = "Plasma-X11" ];then
 
@@ -667,11 +718,20 @@ echo -e "$(tput sgr0)\n\n"
 
 ##Pacotes Padrão
 
-arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager tar gzip bzip2 zip unzip unrar p7zip pipewire pipewire-alsa pipewire-jack pipewire-pulse wireplumber xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-kde --noconfirm
+	if [ "$SS" = "Pipewire" ];then
+	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager tar gzip bzip2 zip unzip unrar p7zip pipewire pipewire-alsa pipewire-jack pipewire-pulse wireplumber xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-kde --noconfirm
+	elif [ "$SS" = "Pulseaudio" ];then
+	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager tar gzip bzip2 zip unzip unrar p7zip pulseaudio pulseaudio-alsa pulseaudio-bluetooth pulseaudio-jack xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-kde --noconfirm
+	systemctl enable pulseaudio.service
+	systemctl enable pulseaudio.socket
+	fi
+
 ##Interface e DM
 
 arch-chroot /mnt pacman -S plasma konsole sddm dolphin spectacle kcalc kwrite gwenview plasma-nm plasma-pa --noconfirm
 arch-chroot /mnt systemctl enable sddm NetworkManager
+
+
 
 
 elif [ "$DE" = "Plasma-Wayland" ];then
@@ -682,12 +742,21 @@ echo -e "$(tput sgr0)\n\n"
 
 ##Pacotes Padrão
 
-arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager tar gzip bzip2 zip unzip unrar p7zip pipewire pipewire-alsa pipewire-jack pipewire-pulse wireplumber xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-kde --noconfirm
-
+	if [ "$SS" = "Pipewire" ];then
+	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager tar gzip bzip2 zip unzip unrar p7zip pipewire pipewire-alsa pipewire-jack pipewire-pulse wireplumber xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-kde --noconfirm
+	elif [ "$SS" = "Pipewire" ];then
+	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager tar gzip bzip2 zip unzip unrar p7zip pulseaudio pulseaudio-alsa pulseaudio-bluetooth pulseaudio-jack xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-kde --noconfirm
+	systemctl enable pulseaudio.service
+	systemctl enable pulseaudio.socket
+	fi
+	
 ##Interface e DM
 
 arch-chroot /mnt pacman -S plasma konsole sddm dolphin spectacle kcalc kwrite gwenview plasma-nm plasma-pa plasma-wayland-session --noconfirm
 arch-chroot /mnt systemctl enable sddm NetworkManager
+
+
+
 
 elif [ "$DE" = "LXDE" ];then
 
@@ -697,12 +766,21 @@ echo -e "$(tput sgr0)\n\n"
 
 ##Pacotes Padrão
 
-arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager tar gzip bzip2 zip unzip unrar p7zip pipewire pipewire-alsa pipewire-jack pipewire-pulse wireplumber xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-gtk --noconfirm
-
+	if [ "$SS" = "Pipewire" ];then
+	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager tar gzip bzip2 zip unzip unrar p7zip pipewire pipewire-alsa pipewire-jack pipewire-pulse wireplumber xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-gtk --noconfirm
+	elif [ "$SS" = "Pulseaudio" ];then
+	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager tar gzip bzip2 zip unzip unrar p7zip pulseaudio pulseaudio-alsa pulseaudio-bluetooth pulseaudio-jack xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-gtk --noconfirm
+	systemctl enable pulseaudio.service
+	systemctl enable pulseaudio.socket
+	fi
+	
 ##Interface e DM
 
 arch-chroot /mnt pacman -S lxde-gtk3 lxtask network-manager-applet lightdm lightdm-gtk-greeter --noconfirm
 arch-chroot /mnt systemctl enable lightdm NetworkManager
+
+
+
 
 elif [ "$DE" = "LXQT" ];then
 
@@ -712,12 +790,21 @@ echo -e "$(tput sgr0)\n\n"
 
 ##Pacotes Padrão
 
-arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager tar gzip bzip2 zip unzip unrar p7zip pipewire pipewire-alsa pipewire-jack pipewire-pulse wireplumber xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-lxqt --noconfirm
-
+	if [ "$SS" = "Pipewire" ];then
+	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager tar gzip bzip2 zip unzip unrar p7zip pipewire pipewire-alsa pipewire-jack pipewire-pulse wireplumber xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-lxqt --noconfirm
+	elif [ "$SS" = "Pulseaudio" ];then
+	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager tar gzip bzip2 zip unzip unrar p7zip pulseaudio pulseaudio-alsa pulseaudio-bluetooth pulseaudio-jack xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-lxqt --noconfirm
+	systemctl enable pulseaudio.service
+	systemctl enable pulseaudio.socket
+	fi
+	
 ##Interface e DM
 
 arch-chroot /mnt pacman -S lxqt lxtask network-manager-applet sddm --noconfirm
 arch-chroot /mnt systemctl enable sddm NetworkManager
+
+
+
 
 elif [ "$DE" = "MATE" ];then
 
@@ -727,13 +814,20 @@ echo -e "$(tput sgr0)\n\n"
 
 ##Pacotes Padrão
 
-arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager tar gzip bzip2 zip unzip unrar p7zip pipewire pipewire-alsa pipewire-jack pipewire-pulse wireplumber xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-gtk --noconfirm
+	if [ "$SS" = "Pipewire" ];then
+	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager tar gzip bzip2 zip unzip unrar p7zip pipewire pipewire-alsa pipewire-jack pipewire-pulse wireplumber xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-gtk --noconfirm
+	elif [ "$SS" = "Pulseaudio" ];then
+	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager tar gzip bzip2 zip unzip unrar p7zip pulseaudio pulseaudio-alsa pulseaudio-bluetooth pulseaudio-jack xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-gtk --noconfirm
+	systemctl enable pulseaudio.service
+	systemctl enable pulseaudio.socket
+	fi
 
 ##Interface e DM
 
 arch-chroot /mnt pacman -S mate mate-extra network-manager-applet lightdm lightdm-gtk-greeter --noconfirm
 
 arch-chroot /mnt systemctl enable lightdm NetworkManager
+
 
 
 
@@ -745,12 +839,18 @@ echo -e "$(tput sgr0)\n\n"
 
 ##Pacotes Padrão
 
-arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager tar gzip bzip2 zip unzip unrar p7zip pipewire pipewire-alsa pipewire-jack pipewire-pulse wireplumber xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-gtk --noconfirm
+	if [ "$SS" = "Pipewire" ];then
+	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager tar gzip bzip2 zip unzip unrar p7zip pipewire pipewire-alsa pipewire-jack pipewire-pulse wireplumber xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-gtk --noconfirm
+	elif [ "$SS" = "Pulseaudio" ];then
+	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager tar gzip bzip2 zip unzip unrar p7zip pulseaudio pulseaudio-alsa pulseaudio-bluetooth pulseaudio-jack xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-gtk --noconfirm
+	systemctl enable pulseaudio.service
+	systemctl enable pulseaudio.socket
+	fi
+
 
 ##Interface e DM
 
 arch-chroot /mnt pacman -S xfce4 xfce4-screenshooter xfce4-pulseaudio-plugin xfce4-whiskermenu-plugin xarchiver lxtask ristretto mousepad galculator thunar-archive-plugin network-manager-applet lightdm lightdm-gtk-greeter --noconfirm
-
 arch-chroot /mnt systemctl enable lightdm NetworkManager
 
 fi
