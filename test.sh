@@ -132,8 +132,8 @@ else
 
 echo "Sim"
 
-if [  $(echo $homedisk | grep -c sd) = 1 ]; then
-echo "sda"
+if [  $(echo $homedisk | grep -c 'sd\|hd\|vd') = 1 ]; then
+	echo "$homedisk"
 
         parted /dev/${homedisk,,} mklabel gpt -s
 
@@ -287,7 +287,7 @@ parted /dev/${installdisk,,} mklabel msdos -s
 
 	   ###PARTIÇÃO ROOT
            if [  $(echo $installdisk | grep -c 'sd\|hd\|vd') = 1 ]; then
-           echo "sda"
+           echo "$installdisk"
                       if [ "$filesystem" = "ext4" ];then
 	              parted /dev/${installdisk,,} mkpart primary ext4 1MiB 100% -s
                       mkfs.ext4 -F /dev/${installdisk,,}1
@@ -453,12 +453,12 @@ done
 echo "Montando /home"
 
 	if [  $(echo $homedisk | grep -c 'sd\|hd\|vd') = 1 ]; then
-	echo "sda"
+	echo "Montando $homedisk como /home"
 	mkdir /mnt/home
 	mount /dev/${homedisk,,}1 /mnt/home
 
 	elif [  $(echo $homedisk | grep -c nvme) = 1 ]; then
-	echo "NVME"
+	echo "Montando $homedisk como /home"
 	mkdir /mnt/home
 	mount /dev/${homedisk,,}p1 /mnt/home
 	fi
