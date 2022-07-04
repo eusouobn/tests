@@ -132,11 +132,11 @@ else
 
 echo "Sim"
 
-if [  $(echo $homedisk | grep -c sd) = 1 ]; then
-echo "sda"
+if [  $(echo $homedisk | grep -c 'sd\|hd\|vd') = 1 ]; then
+	echo "$homedisk"
 
         parted /dev/${homedisk,,} mklabel gpt -s
-	
+
 	if [ "$filesystem" = "ext4" ];then
 	parted /dev/${homedisk,,} mkpart primary ext4 1MiB 100% -s
 	mkfs.ext4 -F /dev/${homedisk,,}1
@@ -197,7 +197,7 @@ echo -e "Sistema EFI"
 parted /dev/${installdisk,,} mklabel gpt -s
 parted /dev/${installdisk,,} mkpart primary fat32 1MiB 301MiB -s
 parted /dev/${installdisk,,} set 1 esp on
-	if [  $(echo $installdisk | grep -c sd) = 1 ]; then
+	if [  $(echo $installdisk | grep -c 'sd\|hd\|vd') = 1 ]; then
 	echo "sda"
 	mkfs.fat -F32 /dev/${installdisk,,}1
 	elif [  $(echo $installdisk | grep -c nvme) = 1 ]; then
@@ -206,7 +206,7 @@ parted /dev/${installdisk,,} set 1 esp on
 	fi
 
 		###PARTIÇÃO ROOT
-		if [  $(echo $installdisk | grep -c sd) = 1 ]; then
+		if [  $(echo $installdisk | grep -c 'sd\|hd\|vd') = 1 ]; then
 		echo "sda"
 			if [ "$filesystem" = "ext4" ];then
 			parted /dev/${installdisk,,} mkpart primary ext4 301MiB 100% -s
@@ -286,8 +286,8 @@ echo -e "Sistema Legacy"
 parted /dev/${installdisk,,} mklabel msdos -s
 
 	   ###PARTIÇÃO ROOT
-           if [  $(echo $installdisk | grep -c sd) = 1 ]; then
-           echo "sda"
+           if [  $(echo $installdisk | grep -c 'sd\|hd\|vd') = 1 ]; then
+           echo "$installdisk"
                       if [ "$filesystem" = "ext4" ];then
 	              parted /dev/${installdisk,,} mkpart primary ext4 1MiB 100% -s
                       mkfs.ext4 -F /dev/${installdisk,,}1
@@ -452,13 +452,13 @@ done
 
 echo "Montando /home"
 
-	if [  $(echo $homedisk | grep -c sd) = 1 ]; then
-	echo "sda"
+	if [  $(echo $homedisk | grep -c 'sd\|hd\|vd') = 1 ]; then
+	echo "Montando $homedisk como /home"
 	mkdir /mnt/home
 	mount /dev/${homedisk,,}1 /mnt/home
 
 	elif [  $(echo $homedisk | grep -c nvme) = 1 ]; then
-	echo "NVME"
+	echo "Montando $homedisk como /home"
 	mkdir /mnt/home
 	mount /dev/${homedisk,,}p1 /mnt/home
 	fi
@@ -620,7 +620,7 @@ echo -e "$(tput sgr0)\n\n"
 	arch-chroot /mnt systemctl enable pulseaudio.service
 	arch-chroot /mnt systemctl enable pulseaudio.socket
 	fi
-	
+
 ##Interface e DM
 
 arch-chroot /mnt pacman -S budgie-desktop gnome-terminal gedit gnome-calculator gnome-calendar gnome-system-monitor nautilus network-manager-applet lightdm lightdm-gtk-greeter --noconfirm
@@ -644,7 +644,7 @@ echo -e "$(tput sgr0)\n\n"
 	arch-chroot /mnt systemctl enable pulseaudio.service
 	arch-chroot /mnt systemctl enable pulseaudio.socket
 	fi
-	
+
 ##Interface e DM
 
 arch-chroot /mnt pacman -S cinnamon network-manager-applet lightdm lightdm-gtk-greeter --noconfirm
@@ -667,7 +667,7 @@ echo -e "$(tput sgr0)\n\n"
 	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager tar gzip bzip2 zip unzip unrar p7zip pulseaudio pulseaudio-alsa pulseaudio-bluetooth pulseaudio-jack xdg-user-dirs gnome-disk-utility noto-fonts xdg-desktop-portal-kde android-tools gvfs-mtp --noconfirm
 	arch-chroot /mnt systemctl enable pulseaudio.service
 	arch-chroot /mnt systemctl enable pulseaudio.socket
-	fi	
+	fi
 
 ##Interface e DM
 
@@ -740,7 +740,7 @@ echo -e "$(tput sgr0)\n\n"
 	arch-chroot /mnt systemctl enable pulseaudio.service
 	arch-chroot /mnt systemctl enable pulseaudio.socket
 	fi
-	
+
 ##Interface e DM
 
 arch-chroot /mnt pacman -S plasma konsole sddm dolphin spectacle kcalc kwrite gwenview plasma-nm plasma-pa plasma-wayland-session --noconfirm
@@ -764,7 +764,7 @@ echo -e "$(tput sgr0)\n\n"
 	arch-chroot /mnt systemctl enable pulseaudio.service
 	arch-chroot /mnt systemctl enable pulseaudio.socket
 	fi
-	
+
 ##Interface e DM
 
 arch-chroot /mnt pacman -S lxde-gtk3 lxtask network-manager-applet lightdm lightdm-gtk-greeter --noconfirm
@@ -788,7 +788,7 @@ echo -e "$(tput sgr0)\n\n"
 	arch-chroot /mnt systemctl enable pulseaudio.service
 	arch-chroot /mnt systemctl enable pulseaudio.socket
 	fi
-	
+
 ##Interface e DM
 
 arch-chroot /mnt pacman -S lxqt lxtask network-manager-applet sddm --noconfirm
@@ -880,7 +880,7 @@ arch-chroot /mnt xdg-user-dirs-update
 if [  $(lsusb | grep -c bluetooth) = 1 ]; then
 	if [[ "$DE" = "Plasma-X11" || "$DE" = "Plasma-Wayland" || "$DE" = "Deepin" || "$DE" = "LXQT" ]];then
 	pacman -S bluez bluez-utils --noconfirm
-	
+
 	elif [[ "$DE" = "Budgie" || "$DE" = "Cinnamon" || "$DE" = "Gnome" || "$DE" = "LXDE" || "$DE" = "MATE" || "$DE" = "XFCE" ]];then
 	pacman -S bluez bluez-utils blueman --noconfirm
 	fi
@@ -940,3 +940,4 @@ echo -e "Instalação Concluída!!!!!"
 
 
 echo -e "$(tput sgr0)"
+
