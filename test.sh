@@ -505,9 +505,13 @@ arch-chroot /mnt timedatectl set-ntp true
 arch-chroot /mnt pacman -Syy git --noconfirm
 
 
-###UTILITARIOS BASICOS
 
-arch-chroot /mnt pacman -Sy nano wget pacman-contrib reflector sudo grub --noconfirm
+
+
+###BASICO
+
+arch-chroot /mnt pacman -Sy nano wget pacman-contrib reflector sudo grub dhcpcd iwd --noconfirm
+
 
 
 
@@ -518,6 +522,8 @@ arch-chroot /mnt pacman -Sy nano wget pacman-contrib reflector sudo grub --nocon
 arch-chroot /mnt useradd -m $USERNAME
 
 echo -e "$(tput sgr0)"
+
+
 
 
 
@@ -862,7 +868,7 @@ arch-chroot /mnt grub-install --target=i386-pc /dev/sda --force && arch-chroot /
 else
 echo -e "Sistema EFI"
 pacman -S efibootmgr --noconfirm
-arch-chroot /mnt grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=Arch --removable && arch-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg
+arch-chroot /mnt grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=Arch && arch-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg
 fi
 
 
@@ -880,9 +886,11 @@ arch-chroot /mnt xdg-user-dirs-update
 if [  $(lsusb | grep -c bluetooth) = 1 ]; then
 	if [[ "$DE" = "Plasma-X11" || "$DE" = "Plasma-Wayland" || "$DE" = "Deepin" || "$DE" = "LXQT" ]];then
 	pacman -S bluez bluez-utils --noconfirm
+	systemctl enable bluetooth
 
 	elif [[ "$DE" = "Budgie" || "$DE" = "Cinnamon" || "$DE" = "Gnome" || "$DE" = "LXDE" || "$DE" = "MATE" || "$DE" = "XFCE" ]];then
 	pacman -S bluez bluez-utils blueman --noconfirm
+	systemctl enable bluetooth
 	fi
 fi
 
@@ -903,9 +911,23 @@ fi
 
 
 
-#### Diasble Wait-Online Service
+#### Disable Wait-Online Service
 
-systemctl disable NetworkManager-wait-online.service
+arch-chroot /mnt systemctl disable NetworkManager-wait-online.service
+
+
+
+
+#### Disable Write Cache For USB Devices
+
+echo -e 'SUBSYSTEMS=="usb", SUBSYSTEM=="block", ENV{ID_FS_USAGE}=="filesystem", ENV{UDISKS_MOUNT_OPTIONS_DEFAULTS}+="sync", ENV{UDISKS_MOUNT_OPTIONS_ALLOW}+="sync"' | tee /mnt/etc/udev/rules.d/99-udisks2-usb_mount.rules
+
+
+
+
+#### Set I/O Scheduler according to device type (NVME / SATA SSD / SATA HDD, etc)
+
+echo -e '# set scheduler for NVMe\nACTION=="add|change", KERNEL=="nvme[0-9]n[0-9]", ATTR{queue/scheduler}="none"\n# set scheduler for SSD and eMMC\nACTION=="add|change", KERNEL=="sd[a-z]*|mmcblk[0-9]*", ATTR{queue/rotational}=="0", ATTR{queue/scheduler}="mq-deadline"\n# set scheduler for rotating disks\nACTION=="add|change", KERNEL=="sd[a-z]*", ATTR{queue/rotational}=="1", ATTR{queue/scheduler}="bfq"' | tee /mnt/etc/udev/rules.d/60-ioschedulers.rules
 
 
 
