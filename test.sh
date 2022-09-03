@@ -890,12 +890,12 @@ arch-chroot /mnt xdg-user-dirs-update
 
 if [  $(lsusb | grep -c Bluetooth) = 1 ]; then
 	if [[ "$DE" = "Plasma-X11" || "$DE" = "Plasma-Wayland" || "$DE" = "Deepin" || "$DE" = "LXQT" ]];then
-	pacman -S bluez bluez-utils --noconfirm
-	systemctl enable bluetooth
+	arch-chroot /mnt pacman -S bluez bluez-utils --noconfirm
+	arch-chroot /mnt systemctl enable bluetooth
 
 	elif [[ "$DE" = "Budgie" || "$DE" = "Cinnamon" || "$DE" = "Gnome" || "$DE" = "LXDE" || "$DE" = "MATE" || "$DE" = "XFCE" ]];then
-	pacman -S bluez bluez-utils blueman --noconfirm
-	systemctl enable bluetooth
+	arch-chroot /mnt pacman -S bluez bluez-utils blueman --noconfirm
+	arch-chroot /mnt systemctl enable bluetooth
 	fi
 fi
 
