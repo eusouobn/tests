@@ -562,7 +562,7 @@ arch-chroot /mnt systemctl enable systemd-timesyncd.service
 
 ###PARALLEL DOWNLOADS
 
-cp /mnt/etc/pacman.conf /mnt/etc/pacman.conf.bak && sed -i 's/#ParallelDownloads/ParallelDownloads/' /etc/pacman.conf && arch-chroot /mnt pacman -Syyyuuu --noconfirm
+cp /mnt/etc/pacman.conf /mnt/etc/pacman.conf.bak && sed -i 's/#ParallelDownloads/ParallelDownloads/' /mnt/etc/pacman.conf && arch-chroot /mnt pacman -Syyyuuu --noconfirm
 
 
 
