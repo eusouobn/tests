@@ -1,6 +1,11 @@
 #!/usr/bin/env sh
 
 
+### Downloads Paralelos Durante a Instalação
+
+sed -i 's/#ParallelDownloads/ParallelDownloads/' /etc/pacman.conf
+
+
 
 ### UTILITARIOS BASICOS
 
@@ -557,7 +562,7 @@ arch-chroot /mnt systemctl enable systemd-timesyncd.service
 
 ###PARALLEL DOWNLOADS
 
-cp /mnt/etc/pacman.conf /mnt/etc/pacman.conf.bak && sed -i '37c\ParallelDownloads = 16' /mnt/etc/pacman.conf && arch-chroot /mnt pacman -Syyyuuu --noconfirm
+cp /mnt/etc/pacman.conf /mnt/etc/pacman.conf.bak && sed -i 's/#ParallelDownloads/ParallelDownloads/' /etc/pacman.conf && arch-chroot /mnt pacman -Syyyuuu --noconfirm
 
 
 
@@ -929,6 +934,11 @@ echo -e 'SUBSYSTEMS=="usb", SUBSYSTEM=="block", ENV{ID_FS_USAGE}=="filesystem", 
 
 echo -e '# set scheduler for NVMe\nACTION=="add|change", KERNEL=="nvme[0-9]n[0-9]", ATTR{queue/scheduler}="none"\n# set scheduler for SSD and eMMC\nACTION=="add|change", KERNEL=="sd[a-z]*|mmcblk[0-9]*", ATTR{queue/rotational}=="0", ATTR{queue/scheduler}="mq-deadline"\n# set scheduler for rotating disks\nACTION=="add|change", KERNEL=="sd[a-z]*", ATTR{queue/rotational}=="1", ATTR{queue/scheduler}="bfq"' | tee /mnt/etc/udev/rules.d/60-ioschedulers.rules
 
+
+
+### Configure FreeType Fonts
+
+sed -i 12d /mnt/etc/profile.d/freetype2.sh && echo -e 'export FREETYPE_PROPERTIES="truetype:interpreter-version=40"' | sudo tee -a /mnt/etc/profile.d/freetype2.sh
 
 
 
