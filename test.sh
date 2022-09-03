@@ -872,7 +872,7 @@ arch-chroot /mnt grub-install --target=i386-pc /dev/sda --force && arch-chroot /
 
 else
 echo -e "Sistema EFI"
-pacman -S efibootmgr --noconfirm
+arch-chroot /mnt pacman -S efibootmgr --noconfirm
 arch-chroot /mnt grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=Arch && arch-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg
 fi
 
