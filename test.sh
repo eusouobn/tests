@@ -980,6 +980,14 @@ fi
 
 
 
+### Enable TRIM
+
+if [  $(lsblk -d -o name,rota | awk 'NR>1' | grep -v loop | while read CC; do dd=$(echo $CC | awk '{print $2}'); if [ ${dd} -eq 0 ]; then echo $(echo $CC | awk '{print $1}') is a SSD drive; fi; done | grep -c "SSD") != 0 ]; then
+arch-chroot /mnt systemctl enable fstrim.timer
+fi
+
+
+
 ##### USER PASSWORD
 
 printf '\x1bc';
