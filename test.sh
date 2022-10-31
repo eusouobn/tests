@@ -630,6 +630,21 @@ cp /mnt/etc/sudoers /mnt/etc/sudoers.bak && sed -i '82c\ %wheel ALL=(ALL:ALL) AL
 arch-chroot /mnt pacman -S xf86-video-${videodriver,,} --noconfirm
 
 
+##VULKAN
+
+if [ "$videodriver" = "AMDGPU" ];then
+sudo pacman -Syy vulkan-radeon vulkan-mesa-layers libva-mesa-driver vulkan-icd-loader lib32-mesa lib32-vulkan-radeon lib32-vulkan-icd-loader lib32-vulkan-mesa-layers lib32-libva-mesa-driver mesa-demos xorg-xdpyinfo amd-ucode mesa-utils
+
+elif [ "$videodriver" = "ATI" ];then
+sudo pacman -Syy vulkan-radeon vulkan-mesa-layers libva-mesa-driver vulkan-icd-loader lib32-mesa lib32-vulkan-radeon lib32-vulkan-icd-loader lib32-vulkan-mesa-layers lib32-libva-mesa-driver mesa-demos xorg-xdpyinfo mesa-utils
+
+elif [ "$videodriver" = "INTEL" ];then
+sudo pacman -Syy vulkan-intel vulkan-icd-loader vulkan-mesa-layers libva-intel-driver lib32-mesa lib32-vulkan-intel lib32-vulkan-icd-loader lib32-libva-intel-driver lib32-vulkan-mesa-layers mesa-demos xorg-xdpyinfo mesa-utils
+
+fi
+
+
+
 
 ###SET-DESKTOP-ENVIRONMENT
 
