@@ -960,11 +960,11 @@ if [ "$swaptype" = "ARQUIVO" ];then
 
 	if [ "$filesystem" = "btrfs" ];then
 
-	truncate -s 0 /swapfile && chattr +C /swapfile && btrfs property set /swapfile compression "" && fallocate -l ${SWAP,,}G /swapfile && chmod 600 /swapfile && mkswap /swapfile && swapon /swapfile && echo -e '/swapfile none swap defaults 0 0\n' | tee -a /etc/fstab
+	arch-chroot /mnt truncate -s 0 /swapfile && arch-chroot /mnt chattr +C /swapfile && arch-chroot /mnt btrfs property set /swapfile compression "" && arch-chroot /mnt fallocate -l ${SWAP,,}G /swapfile && arch-chroot /mnt chmod 600 /swapfile && arch-chroot /mnt mkswap /swapfile && arch-chroot /mnt swapon /swapfile && echo -e '/swapfile none swap defaults 0 0\n' | arch-chroot /mnt tee -a /etc/fstab
 
 	else
 
-	fallocate -l ${SWAP,,}G /swapfile && chmod 600 /swapfile && mkswap /swapfile && swapon /swapfile && echo -e '/swapfile none swap defaults 0 0\n' | tee -a /etc/fstab
+	arch-chroot /mnt fallocate -l ${SWAP,,}G /swapfile && arch-chroot /mnt chmod 600 /swapfile && arch-chroot /mnt mkswap /swapfile && arch-chroot /mnt swapon /swapfile && echo -e '/swapfile none swap defaults 0 0\n' | arch-chroot /mnt tee -a /etc/fstab
 
 	fi
 fi
@@ -972,11 +972,11 @@ fi
 
 if [ "$swaptype" = "ZRAM" ];then
 
-	echo 'zram' | tee /etc/modules-load.d/zram.conf
-	echo 'options zram num_devices=1' | tee /etc/modprobe.d/zram.conf
-	echo 'KERNEL=="zram0", ATTR{disksize}="SWAPQUANTY" RUN="/usr/bin/mkswap /dev/zram0", TAG+="systemd"' | tee /etc/udev/rules.d/99-zram.rules
-	sed -i "s/SWAPQUANTY/${SWAP,,}G/" /etc/udev/rules.d/99-zram.rules
-	echo /dev/zram0 none swap defaults 0 0 | tee -a /etc/fstab
+	echo 'zram' | tee /mnt/etc/modules-load.d/zram.conf
+	echo 'options zram num_devices=1' | tee /mnt/etc/modprobe.d/zram.conf
+	echo 'KERNEL=="zram0", ATTR{disksize}="SWAPQUANTY" RUN="/usr/bin/mkswap /dev/zram0", TAG+="systemd"' | tee /mnt/etc/udev/rules.d/99-zram.rules
+	sed -i "s/SWAPQUANTY/${SWAP,,}G/" /mnt/etc/udev/rules.d/99-zram.rules
+	echo /dev/zram0 none swap defaults 0 0 | tee -a /mnt/etc/fstab
 	fi
 
 
