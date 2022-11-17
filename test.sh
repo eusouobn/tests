@@ -502,22 +502,6 @@ done
 
 
 
-#### Layout do Teclado do Sistema Final
-
-printf '\x1bc';
-PS3=$'\nSelecione uma opção: ';
-echo -e 'Escolha um Layout de Teclado: '
-select kbd in {PT-BR,ThinkPad,Inglês};do
-	case $kbd in
-	PT-BR|ThinkPad|Inglês)
-	echo -e "${kbd,,}\nOK";;
-	*) echo -e "\e[1;38mErro\e[m\nEscolha uma Opção válida.";continue;;
-	esac
-break;
-done
-
-
-
 
 ###FSTAB
 
@@ -1006,20 +990,6 @@ echo -e '# set scheduler for NVMe\nACTION=="add|change", KERNEL=="nvme[0-9]n[0-9
 
 sed -i 12d /mnt/etc/profile.d/freetype2.sh && echo -e 'export FREETYPE_PROPERTIES="truetype:interpreter-version=40"' | sudo tee -a /mnt/etc/profile.d/freetype2.sh
 
-
-
-
-### Set Keyboard
-
-if [ "$kbd" = "PT-BR" ];then
-arch-chroot /mnt localectl set-x11-keymap br abnt2
-
-elif [ "$kbd" = "ThinkPad" ];then
-arch-chroot /mnt localectl set-x11-keymap br abnt2 thinkpad
-
-elif [ "$kbd" = "Inglês" ];then
-break
-fi
 
 
 
