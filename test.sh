@@ -629,16 +629,18 @@ cp /mnt/etc/sudoers /mnt/etc/sudoers.bak && sed -i '82c\ %wheel ALL=(ALL:ALL) AL
 arch-chroot /mnt pacman -S xf86-video-${videodriver,,} --noconfirm
 
 
+
+
 ##VULKAN
 
 if [ "$videodriver" = "AMDGPU" ];then
-sudo pacman -Syy vulkan-radeon vulkan-mesa-layers libva-mesa-driver vulkan-icd-loader lib32-mesa lib32-vulkan-radeon lib32-vulkan-icd-loader lib32-vulkan-mesa-layers lib32-libva-mesa-driver mesa-demos xorg-xdpyinfo amd-ucode mesa-utils
+sudo pacman -Syy vulkan-radeon vulkan-mesa-layers libva-mesa-driver vulkan-icd-loader lib32-mesa lib32-vulkan-radeon lib32-vulkan-icd-loader lib32-vulkan-mesa-layers lib32-libva-mesa-driver mesa-demos xorg-xdpyinfo mesa-utils --noconfirm
 
 elif [ "$videodriver" = "ATI" ];then
-sudo pacman -Syy vulkan-radeon vulkan-mesa-layers libva-mesa-driver vulkan-icd-loader lib32-mesa lib32-vulkan-radeon lib32-vulkan-icd-loader lib32-vulkan-mesa-layers lib32-libva-mesa-driver mesa-demos xorg-xdpyinfo mesa-utils
+sudo pacman -Syy vulkan-radeon vulkan-mesa-layers libva-mesa-driver vulkan-icd-loader lib32-mesa lib32-vulkan-radeon lib32-vulkan-icd-loader lib32-vulkan-mesa-layers lib32-libva-mesa-driver mesa-demos xorg-xdpyinfo mesa-utils --noconfirm
 
 elif [ "$videodriver" = "INTEL" ];then
-sudo pacman -Syy vulkan-intel vulkan-icd-loader vulkan-mesa-layers libva-intel-driver lib32-mesa lib32-vulkan-intel lib32-vulkan-icd-loader lib32-libva-intel-driver lib32-vulkan-mesa-layers mesa-demos xorg-xdpyinfo mesa-utils
+sudo pacman -Syy vulkan-intel vulkan-icd-loader vulkan-mesa-layers libva-intel-driver lib32-mesa lib32-vulkan-intel lib32-vulkan-icd-loader lib32-libva-intel-driver lib32-vulkan-mesa-layers mesa-demos xorg-xdpyinfo mesa-utils --noconfirm
 
 fi
 
@@ -656,9 +658,9 @@ echo -e "$(tput sgr0)\n\n"
 ##Pacotes Padrão
 
 	if [ "$SS" = "Pipewire" ];then
-	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager tar gzip bzip2 zip unzip unrar p7zip pipewire pipewire-alsa pipewire-jack pipewire-pulse wireplumber xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-gtk android-tools gvfs-mtp pavucontrol webkit2gtk xdg-desktop-portal exfatprogs hdparm --noconfirm
+	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager file-roller tar gzip bzip2 zip unzip unrar p7zip pipewire pipewire-alsa pipewire-jack pipewire-pulse wireplumber xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-gtk android-tools gvfs-mtp pavucontrol webkit2gtk xdg-desktop-portal exfatprogs hdparm --noconfirm
 	elif [ "$SS" = "Pulseaudio" ];then
-	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager tar gzip bzip2 zip unzip unrar p7zip pulseaudio pulseaudio-alsa pulseaudio-bluetooth pulseaudio-jack xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-gtk android-tools gvfs-mtp pavucontrol webkit2gtk xdg-desktop-portal exfatprogs hdparm --noconfirm
+	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager file-roller tar gzip bzip2 zip unzip unrar p7zip pulseaudio pulseaudio-alsa pulseaudio-bluetooth pulseaudio-jack xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-gtk android-tools gvfs-mtp pavucontrol webkit2gtk xdg-desktop-portal exfatprogs hdparm --noconfirm
 	arch-chroot /mnt systemctl enable pulseaudio.service
 	arch-chroot /mnt systemctl enable pulseaudio.socket
 	fi
@@ -680,9 +682,9 @@ echo -e "$(tput sgr0)\n\n"
 ##Pacotes Padrão
 
 	if [ "$SS" = "Pipewire" ];then
-	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager tar gzip bzip2 zip unzip unrar p7zip pipewire pipewire-alsa pipewire-jack pipewire-pulse wireplumber xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-gtk android-tools gvfs-mtp pavucontrol webkit2gtk xdg-desktop-portal exfatprogs hdparm --noconfirm
+	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager file-roller tar gzip bzip2 zip unzip unrar p7zip pipewire pipewire-alsa pipewire-jack pipewire-pulse wireplumber xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-gtk android-tools gvfs-mtp pavucontrol webkit2gtk xdg-desktop-portal exfatprogs hdparm --noconfirm
 	elif [ "$SS" = "Pulseaudio" ];then
-	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager tar gzip bzip2 zip unzip unrar p7zip pulseaudio pulseaudio-alsa pulseaudio-bluetooth pulseaudio-jack xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-gtk android-tools gvfs-mtp pavucontrol webkit2gtk xdg-desktop-portal exfatprogs hdparm --noconfirm
+	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager file-roller tar gzip bzip2 zip unzip unrar p7zip pulseaudio pulseaudio-alsa pulseaudio-bluetooth pulseaudio-jack xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-gtk android-tools gvfs-mtp pavucontrol webkit2gtk xdg-desktop-portal exfatprogs hdparm --noconfirm
 	arch-chroot /mnt systemctl enable pulseaudio.service
 	arch-chroot /mnt systemctl enable pulseaudio.socket
 	fi
@@ -704,9 +706,9 @@ echo -e "$(tput sgr0)\n\n"
 ##Pacotes Padrão
 
 	if [ "$SS" = "Pipewire" ];then
-	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager tar gzip bzip2 zip unzip unrar p7zip pipewire pipewire-alsa pipewire-jack pipewire-pulse wireplumber xdg-user-dirs gnome-disk-utility noto-fonts xdg-desktop-portal-kde android-tools gvfs-mtp pavucontrol webkit2gtk xdg-desktop-portal exfatprogs hdparm --noconfirm
+	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager ark tar gzip bzip2 zip unzip unrar p7zip pipewire pipewire-alsa pipewire-jack pipewire-pulse wireplumber xdg-user-dirs gnome-disk-utility noto-fonts xdg-desktop-portal-kde android-tools gvfs-mtp pavucontrol webkit2gtk xdg-desktop-portal exfatprogs hdparm --noconfirm
 	elif [ "$SS" = "Pulseaudio" ];then
-	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager tar gzip bzip2 zip unzip unrar p7zip pulseaudio pulseaudio-alsa pulseaudio-bluetooth pulseaudio-jack xdg-user-dirs gnome-disk-utility noto-fonts xdg-desktop-portal-kde android-tools gvfs-mtp pavucontrol webkit2gtk xdg-desktop-portal exfatprogs hdparm --noconfirm
+	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager ark tar gzip bzip2 zip unzip unrar p7zip pulseaudio pulseaudio-alsa pulseaudio-bluetooth pulseaudio-jack xdg-user-dirs gnome-disk-utility noto-fonts xdg-desktop-portal-kde android-tools gvfs-mtp pavucontrol webkit2gtk xdg-desktop-portal exfatprogs hdparm --noconfirm
 	arch-chroot /mnt systemctl enable pulseaudio.service231518
 	arch-chroot /mnt systemctl enable pulseaudio.socket
 	fi
@@ -728,9 +730,9 @@ echo -e "$(tput sgr0)\n\n"
 ##Pacotes Padrão
 
 	if [ "$SS" = "Pipewire" ];then
-	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager tar gzip bzip2 zip unzip unrar p7zip pipewire pipewire-alsa pipewire-jack pipewire-pulse wireplumber xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-gnome android-tools gvfs-mtp pavucontrol webkit2gtk xdg-desktop-portal exfatprogs hdparm --noconfirm
+	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager file-roller tar gzip bzip2 zip unzip unrar p7zip pipewire pipewire-alsa pipewire-jack pipewire-pulse wireplumber xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-gnome android-tools gvfs-mtp pavucontrol webkit2gtk xdg-desktop-portal exfatprogs hdparm --noconfirm
 	elif [ "$SS" = "Pulseaudio" ];then
-	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager tar gzip bzip2 zip unzip unrar p7zip pulseaudio pulseaudio-alsa pulseaudio-bluetooth pulseaudio-jack xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-gnome android-tools gvfs-mtp pavucontrol webkit2gtk xdg-desktop-portal exfatprogs hdparm --noconfirm
+	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager file-roller tar gzip bzip2 zip unzip unrar p7zip pulseaudio pulseaudio-alsa pulseaudio-bluetooth pulseaudio-jack xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-gnome android-tools gvfs-mtp pavucontrol webkit2gtk xdg-desktop-portal exfatprogs hdparm --noconfirm
 	arch-chroot /mnt systemctl enable pulseaudio.service
 	arch-chroot /mnt systemctl enable pulseaudio.socket
 	fi
@@ -752,9 +754,9 @@ echo -e "$(tput sgr0)\n\n"
 ##Pacotes Padrão
 
 	if [ "$SS" = "Pipewire" ];then
-	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager tar gzip bzip2 zip unzip unrar p7zip pipewire pipewire-alsa pipewire-jack pipewire-pulse wireplumber xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-kde android-tools gvfs-mtp pavucontrol webkit2gtk xdg-desktop-portal exfatprogs hdparm --noconfirm
+	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager ark tar gzip bzip2 zip unzip unrar p7zip pipewire pipewire-alsa pipewire-jack pipewire-pulse wireplumber xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-kde android-tools gvfs-mtp pavucontrol webkit2gtk xdg-desktop-portal exfatprogs hdparm --noconfirm
 	elif [ "$SS" = "Pulseaudio" ];then
-	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager tar gzip bzip2 zip unzip unrar p7zip pulseaudio pulseaudio-alsa pulseaudio-bluetooth pulseaudio-jack xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-kde android-tools gvfs-mtp pavucontrol webkit2gtk xdg-desktop-portal exfatprogs hdparm --noconfirm
+	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager ark tar gzip bzip2 zip unzip unrar p7zip pulseaudio pulseaudio-alsa pulseaudio-bluetooth pulseaudio-jack xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-kde android-tools gvfs-mtp pavucontrol webkit2gtk xdg-desktop-portal exfatprogs hdparm --noconfirm
 	arch-chroot /mnt systemctl enable pulseaudio.service
 	arch-chroot /mnt systemctl enable pulseaudio.socket
 	fi
@@ -776,9 +778,9 @@ echo -e "$(tput sgr0)\n\n"
 ##Pacotes Padrão
 
 	if [ "$SS" = "Pipewire" ];then
-	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager tar gzip bzip2 zip unzip unrar p7zip pipewire pipewire-alsa pipewire-jack pipewire-pulse wireplumber xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-kde android-tools gvfs-mtp pavucontrol webkit2gtk xdg-desktop-portal exfatprogs hdparm --noconfirm
+	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager ark tar gzip bzip2 zip unzip unrar p7zip pipewire pipewire-alsa pipewire-jack pipewire-pulse wireplumber xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-kde android-tools gvfs-mtp pavucontrol webkit2gtk xdg-desktop-portal exfatprogs hdparm --noconfirm
 	elif [ "$SS" = "Pipewire" ];then
-	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager tar gzip bzip2 zip unzip unrar p7zip pulseaudio pulseaudio-alsa pulseaudio-bluetooth pulseaudio-jack xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-kde android-tools gvfs-mtp pavucontrol webkit2gtk xdg-desktop-portal exfatprogs hdparm --noconfirm
+	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager ark tar gzip bzip2 zip unzip unrar p7zip pulseaudio pulseaudio-alsa pulseaudio-bluetooth pulseaudio-jack xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-kde android-tools gvfs-mtp pavucontrol webkit2gtk xdg-desktop-portal exfatprogs hdparm --noconfirm
 	arch-chroot /mnt systemctl enable pulseaudio.service
 	arch-chroot /mnt systemctl enable pulseaudio.socket
 	fi
@@ -800,9 +802,9 @@ echo -e "$(tput sgr0)\n\n"
 ##Pacotes Padrão
 
 	if [ "$SS" = "Pipewire" ];then
-	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager tar gzip bzip2 zip unzip unrar p7zip pipewire pipewire-alsa pipewire-jack pipewire-pulse wireplumber xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-gtk android-tools gvfs-mtp pavucontrol webkit2gtk xdg-desktop-portal exfatprogs hdparm --noconfirm
+	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager file-roller tar gzip bzip2 zip unzip unrar p7zip pipewire pipewire-alsa pipewire-jack pipewire-pulse wireplumber xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-gtk android-tools gvfs-mtp pavucontrol webkit2gtk xdg-desktop-portal exfatprogs hdparm --noconfirm
 	elif [ "$SS" = "Pulseaudio" ];then
-	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager tar gzip bzip2 zip unzip unrar p7zip pulseaudio pulseaudio-alsa pulseaudio-bluetooth pulseaudio-jack xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-gtk android-tools gvfs-mtp pavucontrol webkit2gtk xdg-desktop-portal exfatprogs hdparm --noconfirm
+	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager file-roller tar gzip bzip2 zip unzip unrar p7zip pulseaudio pulseaudio-alsa pulseaudio-bluetooth pulseaudio-jack xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-gtk android-tools gvfs-mtp pavucontrol webkit2gtk xdg-desktop-portal exfatprogs hdparm --noconfirm
 	arch-chroot /mnt systemctl enable pulseaudio.service
 	arch-chroot /mnt systemctl enable pulseaudio.socket
 	fi
@@ -824,9 +826,9 @@ echo -e "$(tput sgr0)\n\n"
 ##Pacotes Padrão
 
 	if [ "$SS" = "Pipewire" ];then
-	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager tar gzip bzip2 zip unzip unrar p7zip pipewire pipewire-alsa pipewire-jack pipewire-pulse wireplumber xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-lxqt android-tools gvfs-mtp pavucontrol webkit2gtk xdg-desktop-portal exfatprogs hdparm --noconfirm
+	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager ark tar gzip bzip2 zip unzip unrar p7zip pipewire pipewire-alsa pipewire-jack pipewire-pulse wireplumber xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-lxqt android-tools gvfs-mtp pavucontrol webkit2gtk xdg-desktop-portal exfatprogs hdparm --noconfirm
 	elif [ "$SS" = "Pulseaudio" ];then
-	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager tar gzip bzip2 zip unzip unrar p7zip pulseaudio pulseaudio-alsa pulseaudio-bluetooth pulseaudio-jack xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-lxqt android-tools gvfs-mtp pavucontrol webkit2gtk xdg-desktop-portal exfatprogs hdparm --noconfirm
+	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager ark tar gzip bzip2 zip unzip unrar p7zip pulseaudio pulseaudio-alsa pulseaudio-bluetooth pulseaudio-jack xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-lxqt android-tools gvfs-mtp pavucontrol webkit2gtk xdg-desktop-portal exfatprogs hdparm --noconfirm
 	arch-chroot /mnt systemctl enable pulseaudio.service
 	arch-chroot /mnt systemctl enable pulseaudio.socket
 	fi
@@ -848,9 +850,9 @@ echo -e "$(tput sgr0)\n\n"
 ##Pacotes Padrão
 
 	if [ "$SS" = "Pipewire" ];then
-	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager tar gzip bzip2 zip unzip unrar p7zip pipewire pipewire-alsa pipewire-jack pipewire-pulse wireplumber xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-gtk android-tools gvfs-mtp pavucontrol webkit2gtk xdg-desktop-portal exfatprogs hdparm hdparm --noconfirm
+	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager file-roller tar gzip bzip2 zip unzip unrar p7zip pipewire pipewire-alsa pipewire-jack pipewire-pulse wireplumber xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-gtk android-tools gvfs-mtp pavucontrol webkit2gtk xdg-desktop-portal exfatprogs hdparm hdparm --noconfirm
 	elif [ "$SS" = "Pulseaudio" ];then
-	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager tar gzip bzip2 zip unzip unrar p7zip pulseaudio pulseaudio-alsa pulseaudio-bluetooth pulseaudio-jack xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-gtk android-tools gvfs-mtp pavucontrol webkit2gtk xdg-desktop-portal exfatprogs hdparm --noconfirm
+	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager file-roller tar gzip bzip2 zip unzip unrar p7zip pulseaudio pulseaudio-alsa pulseaudio-bluetooth pulseaudio-jack xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-gtk android-tools gvfs-mtp pavucontrol webkit2gtk xdg-desktop-portal exfatprogs hdparm --noconfirm
 	arch-chroot /mnt systemctl enable pulseaudio.service
 	arch-chroot /mnt systemctl enable pulseaudio.socket
 	fi
@@ -873,9 +875,9 @@ echo -e "$(tput sgr0)\n\n"
 ##Pacotes Padrão
 
 	if [ "$SS" = "Pipewire" ];then
-	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager tar gzip bzip2 zip unzip unrar p7zip pipewire pipewire-alsa pipewire-jack pipewire-pulse wireplumber xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-gtk android-tools gvfs-mtp pavucontrol webkit2gtk xdg-desktop-portal exfatprogs hdparm --noconfirm
+	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager xarchiver thunar-archive-plugin tar gzip bzip2 zip unzip unrar p7zip pipewire pipewire-alsa pipewire-jack pipewire-pulse wireplumber xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-gtk android-tools gvfs-mtp pavucontrol webkit2gtk xdg-desktop-portal exfatprogs hdparm --noconfirm
 	elif [ "$SS" = "Pulseaudio" ];then
-	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager tar gzip bzip2 zip unzip unrar p7zip pulseaudio pulseaudio-alsa pulseaudio-bluetooth pulseaudio-jack xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-gtk android-tools gvfs-mtp pavucontrol webkit2gtk xdg-desktop-portal exfatprogs hdparm --noconfirm
+	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager xarchiver thunar-archive-plugin tar gzip bzip2 zip unzip unrar p7zip pulseaudio pulseaudio-alsa pulseaudio-bluetooth pulseaudio-jack xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-gtk android-tools gvfs-mtp pavucontrol webkit2gtk xdg-desktop-portal exfatprogs hdparm --noconfirm
 	arch-chroot /mnt systemctl enable pulseaudio.service
 	arch-chroot /mnt systemctl enable pulseaudio.socket
 	fi
@@ -893,9 +895,11 @@ echo -e "$(tput sgr0)\n\n"
 
 
 
+
 ###Base Devel e Afins
 
 arch-chroot /mnt pacman -S base-devel jq --noconfirm
+
 
 
 
