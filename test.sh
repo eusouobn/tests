@@ -779,7 +779,7 @@ echo -e "$(tput sgr0)\n\n"
 
 	if [ "$SS" = "Pipewire" ];then
 	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager ark tar gzip bzip2 zip unzip unrar p7zip pipewire pipewire-alsa pipewire-jack pipewire-pulse wireplumber xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-kde android-tools gvfs-mtp pavucontrol webkit2gtk xdg-desktop-portal exfatprogs hdparm --noconfirm
-	elif [ "$SS" = "Pipewire" ];then
+	elif [ "$SS" = "Pulseaudio" ];then
 	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager ark tar gzip bzip2 zip unzip unrar p7zip pulseaudio pulseaudio-alsa pulseaudio-bluetooth pulseaudio-jack xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-kde android-tools gvfs-mtp pavucontrol webkit2gtk xdg-desktop-portal exfatprogs hdparm --noconfirm
 	arch-chroot /mnt systemctl enable pulseaudio.service
 	arch-chroot /mnt systemctl enable pulseaudio.socket
