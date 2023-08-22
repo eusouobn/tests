@@ -898,7 +898,7 @@ echo -e "$(tput sgr0)\n\n"
 
 ###Base Devel e Afins
 
-arch-chroot /mnt pacman -S base-devel jq --noconfirm
+arch-chroot /mnt pacman -S base-devel jq noto-fonts-emoji --noconfirm
 
 
 
