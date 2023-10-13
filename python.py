@@ -149,3 +149,8 @@ print('{0}! = {1}'.format(numero,fatorial))
 
 ###
 
+import math
+math.factorial(5)
+
+import datetime
+datetime.date.today()
