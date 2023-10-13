@@ -78,3 +78,74 @@ elif idade == 18:
 else:
     print('Você não é Adulto!!!!')
 
+
+###
+
+
+for i in range (5):
+    print('Vou aprender!')
+
+
+###
+
+
+for i in range (5):
+    print(i*2)
+
+
+###
+
+
+a = 0
+for i in range (5):
+    a = a + 1
+print(a)
+
+
+###
+
+
+a = 0
+b = 10
+for i in range(b):
+        print('Frase')
+
+
+###
+
+palavra = 'Matemática'
+for i in palavra:
+    print(i)
+
+
+###
+
+lista = [2,4,6,8,10,12,14,16,18,20]
+for num in lista:
+    print(num)
+
+###
+
+import time
+contador = 0
+while contador < 10:
+    print('Ainda não deu')
+    contador = contador + 1
+    if contador == 6:
+        break
+    time.sleep(1)
+print('Agora deu!')
+
+###
+
+numero = int(input('Digite um número: '))
+fatorial = numero
+contador = 1
+while (numero - contador) > 1:
+    fatorial = fatorial*(numero - contador)
+    contador += 1
+print('{0}! = {1}'.format(numero,fatorial))
+
+
+###
+
