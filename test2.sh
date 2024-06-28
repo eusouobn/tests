@@ -438,9 +438,9 @@ done
 printf '\x1bc';
 PS3=$'\nSelecione uma opção: ';
 echo -e 'Escolha uma Interface Grafica: '
-select DE in {Budgie,Cinnamon,Deepin,Gnome,Plasma-X11,Plasma-Wayland,LXDE,LXQT,MATE,XFCE};do
+select DE in {Budgie,Cinnamon,Deepin,Gnome,Plasma,LXDE,LXQT,MATE,XFCE};do
 	case $DE in
-	Budgie|Cinnamon|Deepin|Gnome|Plasma-X11|Plasma-Wayland|LXDE|LXQT|MATE|XFCE)
+	Budgie|Cinnamon|Deepin|Gnome|Plasma|LXDE|LXQT|MATE|XFCE)
 	echo -e "${de,,}\nOK";;
 	*) echo -e "\e[1;38mErro\e[m\nEscolha uma Opção válida.";continue;;
 	esac
@@ -745,9 +745,9 @@ arch-chroot /mnt systemctl enable gdm NetworkManager
 
 
 
-elif [ "$DE" = "Plasma-X11" ];then
+elif [ "$DE" = "Plasma" ];then
 
-echo "Plasma-X11"
+echo "Plasma"
 
 echo -e "$(tput sgr0)\n\n"
 
@@ -764,30 +764,6 @@ echo -e "$(tput sgr0)\n\n"
 ##Interface e DM
 
 arch-chroot /mnt pacman -S plasma konsole sddm dolphin spectacle kcalc kwrite gwenview plasma-nm plasma-pa --noconfirm
-arch-chroot /mnt systemctl enable sddm NetworkManager
-
-
-
-
-elif [ "$DE" = "Plasma-Wayland" ];then
-
-echo "Plasma-Wayland"
-
-echo -e "$(tput sgr0)\n\n"
-
-##Pacotes Padrão
-
-	if [ "$SS" = "Pipewire" ];then
-	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager ark tar gzip bzip2 zip unzip unrar p7zip pipewire pipewire-alsa pipewire-jack pipewire-pulse wireplumber xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-kde android-tools gvfs-mtp pavucontrol webkit2gtk xdg-desktop-portal exfatprogs hdparm --noconfirm
-	elif [ "$SS" = "Pulseaudio" ];then
-	arch-chroot /mnt pacman -S xorg-server xorg-xinit xterm networkmanager ark tar gzip bzip2 zip unzip unrar p7zip pulseaudio pulseaudio-alsa pulseaudio-bluetooth pulseaudio-jack xdg-user-dirs gnome-disk-utility neofetch noto-fonts xdg-desktop-portal-kde android-tools gvfs-mtp pavucontrol webkit2gtk xdg-desktop-portal exfatprogs hdparm --noconfirm
-	arch-chroot /mnt systemctl enable pulseaudio.service
-	arch-chroot /mnt systemctl enable pulseaudio.socket
-	fi
-
-##Interface e DM
-
-arch-chroot /mnt pacman -S plasma konsole sddm dolphin spectacle kcalc kwrite gwenview plasma-nm plasma-pa plasma-wayland-session --noconfirm
 arch-chroot /mnt systemctl enable sddm NetworkManager
 
 
@@ -892,3 +868,146 @@ fi
 
 
 echo -e "$(tput sgr0)\n\n"
+
+
+
+
+###Base Devel e Afins
+
+arch-chroot /mnt pacman -S base-devel jq noto-fonts-emoji --noconfirm
+
+
+
+
+###GRUB
+
+PASTA_EFI=/sys/firmware/efi
+if [ ! -d "$PASTA_EFI" ];then
+echo -e "Sistema Legacy"
+arch-chroot /mnt grub-install --target=i386-pc /dev/sda --force && arch-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg
+
+else
+echo -e "Sistema EFI"
+arch-chroot /mnt pacman -S efibootmgr --noconfirm
+arch-chroot /mnt grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=Arch && arch-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg
+fi
+
+
+
+
+###USER DIRS UPDATE
+
+arch-chroot /mnt xdg-user-dirs-update
+
+
+
+
+#### Bluetooth
+
+if [  $(lsusb | grep -c Bluetooth) = 1 ]; then
+	if [[ "$DE" = "Plasma-X11" || "$DE" = "Plasma-Wayland" || "$DE" = "Deepin" || "$DE" = "LXQT" ]];then
+	arch-chroot /mnt pacman -S bluez bluez-utils --noconfirm
+	arch-chroot /mnt systemctl enable bluetooth
+
+	elif [[ "$DE" = "Budgie" || "$DE" = "Cinnamon" || "$DE" = "Gnome" || "$DE" = "LXDE" || "$DE" = "MATE" || "$DE" = "XFCE" ]];then
+	arch-chroot /mnt pacman -S bluez bluez-utils blueman --noconfirm
+	arch-chroot /mnt systemctl enable bluetooth
+	fi
+fi
+
+
+
+
+###SET-SWAP
+
+if [ "$swaptype" = "ARQUIVO" ];then
+
+	if [ "$filesystem" = "btrfs" ];then
+
+	arch-chroot /mnt truncate -s 0 /swapfile && arch-chroot /mnt chattr +C /swapfile && arch-chroot /mnt btrfs property set /swapfile compression "" && arch-chroot /mnt fallocate -l ${SWAP,,}G /swapfile && arch-chroot /mnt chmod 600 /swapfile && arch-chroot /mnt mkswap /swapfile && arch-chroot /mnt swapon /swapfile && echo -e '/swapfile none swap defaults 0 0\n' | arch-chroot /mnt tee -a /etc/fstab
+
+	else
+
+	arch-chroot /mnt fallocate -l ${SWAP,,}G /swapfile && arch-chroot /mnt chmod 600 /swapfile && arch-chroot /mnt mkswap /swapfile && arch-chroot /mnt swapon /swapfile && echo -e '/swapfile none swap defaults 0 0\n' | arch-chroot /mnt tee -a /etc/fstab
+
+	fi
+fi
+
+
+if [ "$swaptype" = "ZRAM" ];then
+
+	echo 'zram' | tee /mnt/etc/modules-load.d/zram.conf
+	echo 'options zram num_devices=1' | tee /mnt/etc/modprobe.d/zram.conf
+	echo 'KERNEL=="zram0", ATTR{disksize}="SWAPQUANTY" RUN="/usr/bin/mkswap /dev/zram0", TAG+="systemd"' | tee /mnt/etc/udev/rules.d/99-zram.rules
+	sed -i "s/SWAPQUANTY/${SWAP,,}G/" /mnt/etc/udev/rules.d/99-zram.rules
+	echo /dev/zram0 none swap defaults 0 0 | tee -a /mnt/etc/fstab
+	fi
+
+
+
+#### Disable Wait-Online Service
+
+arch-chroot /mnt systemctl disable NetworkManager-wait-online.service
+
+
+
+
+#### Disable Write Cache For USB Devices
+
+echo -e 'SUBSYSTEMS=="usb", SUBSYSTEM=="block", ENV{ID_FS_USAGE}=="filesystem", ENV{UDISKS_MOUNT_OPTIONS_DEFAULTS}+="sync", ENV{UDISKS_MOUNT_OPTIONS_ALLOW}+="sync"' | tee /mnt/etc/udev/rules.d/99-udisks2-usb_mount.rules
+
+
+
+
+#### Set I/O Scheduler according to device type (NVME / SATA SSD / SATA HDD, etc)
+
+echo -e '# set scheduler for NVMe\nACTION=="add|change", KERNEL=="nvme[0-9]n[0-9]", ATTR{queue/scheduler}="none"\n# set scheduler for SSD and eMMC\nACTION=="add|change", KERNEL=="sd[a-z]*|mmcblk[0-9]*", ATTR{queue/rotational}=="0", ATTR{queue/scheduler}="mq-deadline"\n# set scheduler for rotating disks\nACTION=="add|change", KERNEL=="sd[a-z]*", ATTR{queue/rotational}=="1", ATTR{queue/scheduler}="bfq"' | tee /mnt/etc/udev/rules.d/60-ioschedulers.rules
+
+
+
+
+### Configure FreeType Fonts
+
+sed -i 12d /mnt/etc/profile.d/freetype2.sh && echo -e 'export FREETYPE_PROPERTIES="truetype:interpreter-version=40"' | sudo tee -a /mnt/etc/profile.d/freetype2.sh
+
+
+
+
+### Enable TRIM
+
+if [  $(lsblk -d -o name,rota | awk 'NR>1' | grep -v loop | while read CC; do dd=$(echo $CC | awk '{print $2}'); if [ ${dd} -eq 0 ]; then echo $(echo $CC | awk '{print $1}') is a SSD drive; fi; done | grep -c "SSD") != 0 ]; then
+arch-chroot /mnt systemctl enable fstrim.timer
+fi
+
+
+
+##### USER PASSWORD
+
+printf '\x1bc';
+
+echo "Digite e Repita a Senha de Usuário"
+
+arch-chroot /mnt passwd $USERNAME
+
+
+
+
+##### ROOT PASSWORD
+
+printf '\x1bc';
+
+echo "Digite e Repita a Senha de ROOT"
+
+arch-chroot /mnt passwd
+
+
+
+
+
+echo -e "$(tput bel)$(tput bold)$(tput setaf 7)$(tput setab 4)"
+
+
+echo -e "Instalação Concluída!!!!!"
+
+
+echo -e "$(tput sgr0)"
